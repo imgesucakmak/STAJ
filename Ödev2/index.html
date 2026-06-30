@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Haber Sayfası</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Calibri, Arial, sans-serif;
+      background: #5b9bd5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 80px;
+    }
+
+    header {
+      background: #2e75b6;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid #1f5c96;
+    }
+
+    .logo {
+      font-style: italic;
+      font-weight: bold;
+      font-size: 1.4rem;
+      color: #ffffff;
+    }
+
+    .greeting-box {
+      border: 2px solid #ffffff;
+      padding: 6px 14px;
+      color: #ffffff;
+      font-style: italic;
+      font-size: 1rem;
+      background: transparent;
+    }
+
+    main {
+      flex: 1;
+      padding: 12px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .top-section {
+      background: #d9e8f7;
+      border: 1px solid #aac8e8;
+      border-radius: 4px;
+      padding: 12px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .news-left {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .news-img-placeholder {
+      width: 190px;
+      height: 190px;
+      border-radius: 8px;
+      object-fit: cover;
+      box-shadow: 5px 6px 16px rgba(0, 0, 0, 0.45);
+      display: block;
+    }
+
+    .news-buttons {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-add {
+      background: #70ad47;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: 7px 14px;
+      font-size: 0.88rem;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .btn-add:hover { background: #5a9236; }
+
+    .btn-delete {
+      background: #ed7d31;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: 7px 14px;
+      font-size: 0.88rem;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .btn-delete:hover { background: #c96520; }
+
+    .news-right {
+      flex: 1;
+    }
+
+    .news-right h2 {
+      font-size: 1.15rem;
+      font-weight: bold;
+      color: #1f3864;
+      margin-bottom: 8px;
+      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+      border-left: 4px solid #2e75b6;
+      padding-left: 8px;
+      line-height: 1.4;
+    }
+
+    .news-right p {
+      font-size: 0.92rem;
+      color: #1a1a1a;
+      line-height: 1.65;
+      text-align: justify;
+    }
+
+    .image-box {
+      background: #d9e8f7;
+      border: 1px solid #aac8e8;
+      border-radius: 4px;
+      padding: 12px;
+    }
+
+    #image-container {
+      display: flex;
+      flex-direction: row;
+      gap: 10px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding-bottom: 4px;
+      align-items: center;
+    }
+
+    .img-thumb {
+      width: 120px;
+      min-width: 120px;
+      height: 80px;
+      border-radius: 8px;
+      object-fit: cover;
+      flex-shrink: 0;
+      display: block;
+    }
+
+    footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: #5b9bd5;
+      padding: 10px 16px 14px;
+      color: #1a3a5c;
+      font-size: 0.9rem;
+      border-top: 2px solid #2e75b6;
+      z-index: 999;
+    }
+
+    footer .footer-credit {
+      margin-bottom: 4px;
+    }
+
+    footer .footer-links a {
+      color: #1a3a5c;
+      text-decoration: underline;
+      font-size: 0.9rem;
+      font-family: inherit;
+    }
+    footer .footer-links a:hover { color: #0a1e38; }
+
+    #name-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .modal-box {
+      background: #fff;
+      border-radius: 8px;
+      padding: 32px 28px;
+      text-align: center;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+      min-width: 280px;
+    }
+
+    .modal-box h2 {
+      margin-bottom: 14px;
+      color: #2e75b6;
+      font-size: 1.1rem;
+    }
+
+    .modal-box input {
+      width: 100%;
+      padding: 9px 12px;
+      border: 1.5px solid #aac8e8;
+      border-radius: 5px;
+      font-size: 1rem;
+      margin-bottom: 12px;
+      font-family: inherit;
+    }
+
+    .modal-box button {
+      width: 100%;
+      padding: 9px;
+      background: #2e75b6;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .modal-box button:hover { background: #1f5c96; }
+  </style>
+</head>
+<body>
+
+  <div id="name-modal">
+    <div class="modal-box">
+      <h2>Lütfen adınızı girin</h2>
+      <input type="text" id="name-input" placeholder="Adınız..." />
+      <button onclick="submitName()">Devam Et</button>
+    </div>
+  </div>
+
+  <header>
+    <div class="logo">LOGO</div>
+    <div class="greeting-box" id="greeting">Merhaba, {Buraya İsim Gelecek}</div>
+  </header>
+
+  <main>
+
+    <div class="top-section">
+
+      <div class="news-left">
+        <img
+          class="news-img-placeholder"
+          src="https://picsum.photos/190/190?random=99"
+          alt="Haber Resmi"
+          onerror="this.style.background='#9e9e9e'; this.style.display='flex'; this.outerHTML='<div class=\'news-img-placeholder\'>RESİM</div>'"
+        />
+        <div class="news-buttons">
+          <button class="btn-add"    onclick="addImage()">Resim Ekle</button>
+          <button class="btn-delete" onclick="deleteImage()">Resim Sil</button>
+        </div>
+      </div>
+
+      <div class="news-right">
+        <h2>Küresel İnternet Hızı Yeniden Yükselişte</h2>
+        <p>
+          İnternet ve internet sayesinde erişilebilirlik artık günlük yaşantımızın bir numaralı
+          vazgeçilmezi. Gerçi ülkemizde hala internet hızının düşürülmesi, erişim engelleri ya
+          da internet sağlayıcılarının sunduğu hiç de adil olmayan saçma kota sistemleri gibi
+          mantıksızca şeyler yüzünden bizim internet kullanırken keyif almaktan ziyade "kaç GB
+          kaldı?" ya da "hangi VPN daha iyi?" gibi dertlerimiz oluyor fakat; dünya genelinde
+          internet hızı, yükleliş göstermeye devam ediyor.
+        </p>
+      </div>
+    </div>
+
+    <div class="image-box">
+      <div id="image-container">
+        <img class="img-thumb" src="https://picsum.photos/120/80?random=1" alt="Resim 1" />
+        <img class="img-thumb" src="https://picsum.photos/120/80?random=2" alt="Resim 2" />
+        <img class="img-thumb" src="https://picsum.photos/120/80?random=3" alt="Resim 3" />
+        <img class="img-thumb" src="https://picsum.photos/120/80?random=4" alt="Resim 4" />
+        <img class="img-thumb" src="https://picsum.photos/120/80?random=5" alt="Resim 5" />
+        <img class="img-thumb" src="https://picsum.photos/120/80?random=6" alt="Resim 6" />
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    <div class="footer-credit">Designed by İmge Su Çakmak</div>
+    <div class="footer-links">
+      <a href="https://www.google.com">Link 1</a>,
+      <a href="https://www.wikipedia.org" target="_blank">Link 2</a>,
+      <a href="https://www.youtube.com"   target="_blank">Link 3</a>
+    </div>
+  </footer>
+
+  <script>
+    function submitName() {
+      const val = document.getElementById('name-input').value.trim();
+      if (!val) { alert('Lütfen bir isim girin.'); return; }
+      document.getElementById('greeting').textContent = 'Merhaba, ' + val;
+      document.getElementById('name-modal').style.display = 'none';
+    }
+
+    document.getElementById('name-input').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') submitName();
+    });
+
+    let imgSeed = 7;
+
+    function addImage() {
+      const container = document.getElementById('image-container');
+      const img = document.createElement('img');
+      img.className = 'img-thumb';
+      img.src = 'https://picsum.photos/120/80?random=' + imgSeed;
+      img.alt = 'Resim ' + imgSeed;
+      container.appendChild(img);
+      imgSeed++;
+    }
+
+    function deleteImage() {
+      const container = document.getElementById('image-container');
+      if (container.lastElementChild) {
+        container.removeChild(container.lastElementChild);
+      }
+    }
+  </script>
+
+</body>
+</html>

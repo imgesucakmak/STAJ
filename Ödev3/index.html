@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Renk Paleti</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- CSS dosyasını içeri al -->
+</head>
+<body>
+
+  <h1>Renk Paleti</h1>
+  <p class="aciklama">Renk seçmek için dikdörtgene veya daireye tıkla.</p>
+
+  <div class="sahne">
+    <div id="dikdortgen" class="sekil dikdortgen" data-hedef="dikdortgen"></div>
+    <div id="daire" class="sekil daire" data-hedef="daire"></div>
+  </div>
+
+
+  <div class="renk-kodu-alani">
+    <label for="renkKodu">Renk:</label>
+    <input type="text" id="renkKodu" readonly value="#FFFFFF">
+  </div>
+
+  <div id="palet" class="palet"></div>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="script.js"></script>
+  <!-- jQuery ve JavaScript dosyalarını içeri al, gerekli kütüphaneleri ekle -->
+</body>
+</html>

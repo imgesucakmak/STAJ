@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kayıt Ekranı</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            background-color: #f0f0f0;
+            margin: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .main-container {
+            background-color: #729fcf;
+            border: 2px solid #4a74a5;
+            width: 850px;
+            padding: 15px;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            gap: 20px;
+            padding: 20px;
+            border: 1px solid #555;
+            background-image: url('images/header-bg.jpg'); 
+            background-size: cover;
+            background-position: center;
+            background-color: #a6a6a6;
+        }
+        .logo-box {
+            background-color:transparent;
+            align-items: center;
+            display: flex;
+            height: 60px;
+        }
+        .header-text {
+            background-color: white;
+            border: 1px solid #555;
+            padding: 10px;
+            width: 250px;
+            font-size: 13px;
+            color: black;
+        }
+
+        nav {
+            background-color: #e68a2e;
+            display: flex;
+            border: 1px solid #555;
+            margin-bottom: 15px;
+        }
+        nav a {
+            flex: 1;
+            text-align: center;
+            padding: 8px 0;
+            color: black;
+            text-decoration: none;
+            font-size: 14px;
+            border-right: 1px solid #555;
+        }
+        nav a:last-child {
+            border-right: none;
+        }
+        nav a:hover {
+            background-color: #d17a22;
+        }
+
+        .content-area {
+            background-color: white;
+            border: 1px solid #555;
+            padding: 15px;
+            display: flex;
+            gap: 15px;
+        }
+
+        .form-section {
+            background-color: #f1c232;
+            border: 2px solid #aaa;
+            padding: 15px;
+            width: 45%;
+        }
+        .form-title {
+            background-color: white;
+            border: 1px solid #555;
+            text-align: center;
+            font-weight: bold;
+            font-size: 20px;
+            padding: 5px;
+            margin-bottom: 20px;
+        }
+        .form-row {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .form-row label {
+            font-size: 12px;
+            margin-right: 10px;
+            font-weight: bold;
+            width: 120px;
+            text-align: left;
+        }
+        .form-row input[type="text"],
+        .form-row input[type="email"],
+        .form-row input[type="password"],
+        .form-row select {
+            width: 150px;
+            border: 1px solid #555;
+            padding: 3px;
+        }
+        
+        .gender-row {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .gender-row label.main-label {
+            font-size: 12px;
+            margin-right: 10px;
+            font-weight: bold;
+            width: 120px;
+        }
+        .gender-options {
+            width: 150px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .gender-options label {
+            font-size: 12px;
+            cursor: pointer;
+            user-select: none;
+        }
+        .gender-options input[type="radio"] {
+            cursor: pointer;
+        }
+
+        .form-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 10px;
+        }
+        .btn-temizle {
+            background-color: #d9d9d9;
+            border: 1px solid #888;
+            border-radius: 5px;
+            padding: 5px 15px;
+            cursor: pointer;
+        }
+        .btn-gonder {
+            background-color: #8faadc;
+            border: 1px solid #888;
+            border-radius: 5px;
+            padding: 5px 15px;
+            cursor: pointer;
+        }
+
+        .right-section {
+            width: 55%;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .image-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        .image-box {
+            background-color: #a6a6a6;
+            border: 2px solid #555;
+            border-radius: 15px;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .image-box img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .paragraph-box {
+            border: 1px solid #555;
+            padding: 10px;
+            font-size: 13px;
+            min-height: 50px; 
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-container">
+    
+    <header>
+        <div class="logo-box">
+            <img src="images/logo.jpg" alt="Logo" style="height: 100%; max-height: 50px; object-fit: contain;"></div>
+    </header>
+
+    <nav>
+        <a href="https://www.google.com">Ana Sayfa</a>
+        <a href="https://www.wikipedia.org">İndirmeler</a>
+        <a href="https://www.youtube.com">Forum</a>
+        <a href="https://www.reddit.com/" target="_blank">Haberler</a>
+        <a href="https://www.amazon.com.tr/ref=nav_logo" target="_blank">Bizimle İletişim'e geçin</a>
+    </nav>
+
+    <div class="content-area">
+        
+        <div class="form-section">
+            <div class="form-title">KAYIT OL</div>
+            
+            <form onsubmit="alert('Kayıt başarılı!'); return false;">
+                
+                <div class="form-row">
+                    <label for="ad">Ad:</label>
+                    <input type="text" id="ad" name="ad" maxlength="20" required>
+                </div>
+
+                <div class="form-row">
+                    <label for="soyad">Soyad:</label>
+                    <input type="text" id="soyad" name="soyad" maxlength="20" required>
+                </div>
+
+                <div class="form-row">
+                    <label for="eposta">E-Posta Adresi:</label>
+                    <input type="email" id="eposta" name="eposta" required>
+                </div>
+
+                <div class="form-row">
+                    <label for="kullanici_adi">Kullanıcı Adı:</label>
+                    <input type="text" id="kullanici_adi" name="kullanici_adi" required>
+                </div>
+
+                <div class="form-row">
+                    <label for="sifre">Şifre:</label>
+                    <input type="password" id="sifre" name="sifre" required>
+                </div>
+
+                <div class="form-row">
+                    <label for="takim">Takım:</label>
+                    <select id="takim" name="takim" required>
+                        <option value=""></option>
+                        <option value="Galatasaray">Galatasaray</option>
+                        <option value="Fenerbahçe">Fenerbahçe</option>
+                        <option value="Beşiktaş">Beşiktaş</option>
+                    </select>
+                </div>
+
+                <div class="gender-row">
+                    <label class="main-label">Cinsiyet:</label>
+                    <div class="gender-options">
+                        <input type="radio" id="bay" name="cinsiyet" value="Bay" required>
+                        <label for="bay">Bay</label>
+                        
+                        <input type="radio" id="bayan" name="cinsiyet" value="Bayan" required>
+                        <label for="bayan">Bayan</label>
+                    </div>
+                </div>
+
+                <div class="form-buttons">
+                    <button type="reset" class="btn-temizle">Temizle</button>
+                    <button type="submit" class="btn-gonder">Gönder</button>
+                </div>
+
+            </form>
+        </div>
+
+        <div class="right-section">
+            
+            <div class="image-grid">
+                <div class="image-box">
+                    <img src="images/resim1.jpg" alt="1. Resim">
+                </div>
+                <div class="image-box">
+                    <img src="images/resim2.jpg" alt="2. Resim">
+                </div>
+                <div class="image-box">
+                    <img src="images/resim3.jpg" alt="3. Resim">
+                </div>
+                <div class="image-box">
+                    <img src="images/resim4.jpg" alt="4. Resim">
+                </div>
+            </div>
+
+            <div class="paragraph-box">
+               Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+               Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </div>
+
+        </div> </div>
+
+</div>
+
+</body>
+</html>

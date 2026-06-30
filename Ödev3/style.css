@@ -1,0 +1,117 @@
+* {
+  box-sizing: border-box;
+}
+/*Bir kutuya padding veya border verilince,
+ o kutunun orijinal genişliğini büyütme, içe doğru daralt*/
+
+body {
+  font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+  background: #f5f6f8;
+  color: #222;
+  text-align: center;
+  padding: 40px 20px;
+}
+
+h1 {
+  margin-bottom: 4px;
+}
+
+.aciklama {
+  color: #666;
+  margin-top: 0;
+  margin-bottom: 40px;
+}
+
+.sahne {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 60px;
+  margin-bottom: 30px;
+}
+
+.sekil {
+  background: #ffffff;
+  border: 2px solid #1a1a1a;
+  cursor: pointer; 
+  transition: transform 0.15s ease;
+}
+/*(tıklanabilir) simgesine dönüşmesini sağlar.
+Büyüme işleminin , 0.15 saniye gerçekleşmesini sağlar.*/
+
+.sekil:hover {
+  transform: scale(1.03);
+}
+/*Fare şeklin üzerine geldiğinde, 
+şekli kendi boyutunun %3'ü kadar büyütür.*/
+
+.dikdortgen {
+  width: 170px;
+  height: 110px;
+}
+
+.daire {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+}
+/*Kare bir kutuyu daireye çevirir.*/
+
+.renk-kodu-alani {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.renk-kodu-alani label {
+  font-weight: 600;
+}
+
+#renkKodu {
+  font-family: "Consolas", monospace;
+  color: #1a4fd6;
+  background: #fff;
+  border: 1px solid #b6b9c2;
+  border-radius: 4px;
+  padding: 6px 10px;
+  width: 110px;
+  text-align: center;
+}
+
+.palet {
+  position: absolute;
+  display: grid;
+  grid-template-columns: repeat(6, 30px);
+  grid-auto-rows: 30px;
+  gap: 4px;
+  background: #ffffff;
+  border: 1px solid #d4d6db;
+  border-radius: 6px;
+  padding: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  z-index: 100;
+}
+/*position: absolute;: Paletin , ekranın üzerinde bağımsızca süzülmesini sağlar. 
+
+z-index: 100;: Paletin sayfadaki diğer her şeyin üstünde görünmesini garanti eder.
+
+display: grid; ve grid-template-columns: repeat(6, 30px);: Flexbox tek boyutludur. Grid ise iki boyutludur. */
+
+.renk-karesi {
+  width: 30px;
+  height: 30px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 3px;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+
+.renk-karesi:hover {
+  transform: scale(1.12);
+}
+
+.renk-karesi.secili {
+  outline: 2px dotted #000000;
+  outline-offset: 1px;
+}
