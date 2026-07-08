@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>Yönetim Paneli - Admin</title>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<style>
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #ffffff;
+    padding: 30px;
+  }
+
+  .ust-alan {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 900px;
+    margin: 0 auto 15px auto;
+  }
+
+  .ust-alan h2 {
+    color: #5B9BD5;
+    margin: 0;
+  }
+
+  .yenile-btn {
+    background: #5B9BD5;
+    color: #fff;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+
+  .yenile-btn:hover {
+    background: #4a86bd;
+  }
+
+  .yenile-btn:disabled {
+    background: #a9c3dc;
+    cursor: not-allowed;
+  }
+
+  table {
+    max-width: 900px;
+    margin: 0 auto;
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  th, td {
+    background: #BDD6EE;
+    border: 1px solid #ffffff;
+    padding: 10px;
+    text-align: center;
+    font-size: 14px;
+    vertical-align: middle;
+  }
+
+  th {
+    font-weight: bold;
+  }
+
+  .satir-no {
+    width: 40px;
+    font-weight: bold;
+  }
+
+  tbody tr:nth-child(odd) td.resim-hucre,
+  tbody tr:nth-child(odd) td.detay-hucre {
+    background: #DEEAF6; 
+  }
+
+  tbody tr:nth-child(even) td.resim-hucre,
+  tbody tr:nth-child(even) td.detay-hucre {
+    background: #BDD6EE; 
+  }
+
+  td.resim-hucre img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+
+  td.baslik-hucre {
+    font-weight: bold;
+    max-width: 220px;
+  }
+
+  td.detay-hucre {
+    max-width: 320px;
+  }
+
+  .durum-mesaji {
+    max-width: 900px;
+    margin: 15px auto;
+    text-align: center;
+    color: #888;
+    font-size: 14px;
+  }
+
+  tbody tr {
+    cursor: pointer; 
+  }
+
+  .sil-btn {
+    background: #d9534f;
+    color: #fff;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 13px;
+    cursor: pointer;
+  }
+
+  .sil-btn:hover {
+    background: #c9302c;
+  }
+
+ 
+  .onay-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.45);
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+  }
+
+  .onay-overlay.goster {
+    display: flex;
+  }
+
+  .onay-kutu {
+    background: #ffffff;
+    padding: 25px 30px;
+    border-radius: 6px;
+    max-width: 320px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+  }
+
+  .onay-kutu p {
+    margin: 0 0 20px 0;
+    font-size: 15px;
+    color: #333;
+  }
+
+  .onay-btn {
+    padding: 8px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    margin: 0 6px;
+  }
+
+  .onay-evet {
+    background: #d9534f;
+    color: #fff;
+  }
+
+  .onay-hayir {
+    background: #ccc;
+    color: #333;
+  }
+</style>
+</head>
+<body>
+
+  <div class="onay-overlay" id="onayOverlay">
+    <div class="onay-kutu">
+      <p>Bu haberi silmek istediğinize emin misiniz?</p>
+      <button class="onay-btn onay-evet" id="onayEvetBtn">Evet</button>
+      <button class="onay-btn onay-hayir" id="onayHayirBtn">Hayır</button>
+    </div>
+  </div>
+
+  <div class="ust-alan">
+    <h2>Yönetim Paneli - Haberler</h2>
+    <button class="yenile-btn" id="yenileBtn">Yenile</button>
+  </div>
+
+  <div class="durum-mesaji" id="durumMesaji"></div>
+
+  <table id="haberTablosu">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Resim</th>
+        <th>Haber Başlığı</th>
+        <th>Detay</th>
+        <th>İşlemler</th>
+      </tr>
+    </thead>
+    <tbody id="haberGovde">
+   
+    </tbody>
+  </table>
+
+<script>
+
+  // CORS engeline takılmamak için Milliyet RSS adresini rss2json servisi üzerinden JSON'a çevirerek çekiyor.
+  var RSS_KAYNAK = "http://www.milliyet.com.tr/rss/rssNew/gundemRss.xml";
+  var API_URL = "https://api.rss2json.com/v1/api.json?rss_url=" + encodeURIComponent(RSS_KAYNAK);
+
+  // Bir haberin resmini bulmaya çalışır: önce thumbnail, sonra enclosure,
+  // ikisi de yoksa description/content HTML'inin içindeki ilk <img> etiketine bakar.
+  function haberResimBul(haber) {
+    if (haber.thumbnail) {
+      return haber.thumbnail;
+    }
+    if (haber.enclosure && haber.enclosure.link) {
+      return haber.enclosure.link;
+    }
+
+    var kaynakMetin = haber.content || haber.description || "";
+    var eslesme = kaynakMetin.match(/<img[^>]+src=["']([^"'>]+)["']/i);
+    if (eslesme) {
+      return eslesme[1];
+    }
+
+    return null; 
+  }
+
+  // HTML etiketlerini metinden temizleyen  yardımcı fonk.
+  function etiketleriTemizle(metin) {
+    var gecici = document.createElement("div");
+    gecici.innerHTML = metin;
+    return gecici.textContent || gecici.innerText || "";
+  }
+
+  function haberleriGetir() {
+    var $govde = $("#haberGovde");
+    var $durum = $("#durumMesaji");
+    var $btn = $("#yenileBtn");
+
+    $durum.text("Haberler yükleniyor...");
+    $btn.prop("disabled", true);
+
+    // Sona rastgele bir zaman damgası ekler, tarayıcı belleğe alınmış cevabı değil, yeni bir istek gönderir.
+    var istekUrl = API_URL + "&_=" + Date.now();
+
+    $.ajax({
+      url: istekUrl,
+      method: "GET",
+      dataType: "json",
+      cache: false,
+
+      success: function (veri) {
+        $govde.empty(); 
+
+        if (!veri.items || veri.items.length === 0) {
+          $durum.text("Gösterilecek haber bulunamadı.");
+          return;
+        }
+
+        $.each(veri.items, function (index, haber) {
+
+          var VARSAYILAN_IKON = "https://cdn-icons-png.flaticon.com/512/2965/2965879.png";
+          var resimUrl = haberResimBul(haber) || VARSAYILAN_IKON;
+
+          var detayMetin = etiketleriTemizle(haber.description);
+          if (detayMetin.length > 140) {
+            detayMetin = detayMetin.substring(0, 140) + "...";
+          }
+
+          var $satir = $("<tr></tr>");
+          $satir.attr("data-link", haber.link); 
+
+          $satir.append('<td class="satir-no">' + (index + 1) + '</td>');
+          $satir.append('<td class="resim-hucre"><img src="' + resimUrl + '" alt="haber resmi" onerror="this.onerror=null;this.src=\'' + VARSAYILAN_IKON + '\';"></td>');
+          $satir.append('<td class="baslik-hucre">' + haber.title + '</td>');
+          $satir.append('<td class="detay-hucre">' + detayMetin + '</td>');
+          $satir.append('<td><button class="sil-btn">Sil</button></td>');
+
+          $govde.append($satir);
+        });
+
+        var simdi = new Date();
+        var saat = simdi.getHours().toString().padStart(2, "0") + ":" +
+                   simdi.getMinutes().toString().padStart(2, "0") + ":" +
+                   simdi.getSeconds().toString().padStart(2, "0");
+        $durum.text("Toplam " + veri.items.length + " haber listelendi. (Son güncelleme: " + saat + ")");
+      },
+
+      error: function () {
+        $govde.empty();
+        $durum.text("Haberler yüklenirken bir hata oluştu. Lütfen tekrar deneyin.");
+      },
+
+      complete: function () {
+        $btn.prop("disabled", false);
+      }
+    });
+  }
+
+  $(document).ready(function () {
+    haberleriGetir();
+
+    $("#yenileBtn").on("click", function () {
+      haberleriGetir();
+    });
+
+   
+    // Satırlar JS ile sonradan eklendiği için "delegation" kullanır.
+    // olayı doğrudan satıra değil, hep var olan #haberGovde'ye bağlar,
+    // ileride eklenen satırlar için de otomatik çalışır.
+    $("#haberGovde").on("dblclick", "tr", function () {
+      var link = $(this).attr("data-link");
+      if (link) {
+        window.open(link, "_blank");
+      }
+    });
+
+    var silinecekSatir = null;
+
+    $("#haberGovde").on("click", ".sil-btn", function (e) {
+      e.stopPropagation(); 
+      silinecekSatir = $(this).closest("tr"); 
+      $("#onayOverlay").addClass("goster");
+    });
+
+    $("#onayEvetBtn").on("click", function () {
+      if (silinecekSatir) {
+        silinecekSatir.remove();
+        silinecekSatir = null;
+      }
+      $("#onayOverlay").removeClass("goster");
+    });
+
+    $("#onayHayirBtn").on("click", function () {
+      silinecekSatir = null;
+      $("#onayOverlay").removeClass("goster");
+    });
+  });
+</script>
+
+</body>
+</html>

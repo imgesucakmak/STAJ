@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>Yönetim Paneli - Giriş</title>
+<style>
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #ffffff;
+  }
+
+  .dis-kutu {
+    background: #5B9BD5;
+    width: 460px;
+    padding: 55px 40px 75px 40px;
+    border-radius: 4px;
+    position: relative; 
+  }
+
+  .popup {
+    display: none;
+    position: absolute;
+    top: -55px;
+    left: 0;
+    right: 0;
+    padding: 12px;
+    border-radius: 4px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 14px;
+    color: #fff;
+  }
+  
+  .popup.hata { background: #d9534f; }
+  .popup.basari { background: #4caf7d; }
+  .popup.goster { display: block; }
+
+  .ic-kolon {
+    width: 230px;
+    margin: 0 auto;
+  }
+
+  .baslik-kutu {
+    background: #ffffff;
+    border-radius: 6px;
+    padding: 10px 14px;
+    text-align: center;
+    margin-bottom: 22px;
+  }
+
+  .baslik-kutu h1 {
+    font-weight: 300;
+    font-size: 24px;
+    line-height: 1.15;
+    margin: 0;
+    color: #000000;
+  }
+
+  .form-alan {
+    text-align: left;
+    margin-bottom: 14px;
+  }
+
+  .form-alan label {
+    display: block;
+    font-size: 13px;
+    color: #000000;
+    margin-bottom: 4px;
+  }
+
+  .form-alan input {
+    width: 100%;
+    padding: 6px 8px;
+    border: 1px solid #000000;
+    border-radius: 2px;
+    font-size: 13px;
+    background: #ffffff;
+  }
+
+  .giris-btn-alan {
+    text-align: center;
+    margin-top: 18px;
+  }
+
+  .giris-btn {
+    width: 60%;
+    padding: 8px 0;
+    background: #A9CD95;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #000000;
+    cursor: pointer;
+  }
+
+  .giris-btn:hover {
+    background: #93bd7c;
+  }
+</style>
+</head>
+<body>
+
+  <div class="dis-kutu">
+
+    <div id="popup" class="popup"></div>
+
+    <div class="ic-kolon">
+
+      <div class="baslik-kutu">
+        <h1>Yönetim<br>Paneli</h1>
+      </div>
+
+      <div class="form-alan">
+        <label for="kullaniciAdi">Kullanıcı Adı:</label>
+        <input type="text" id="kullaniciAdi">
+      </div>
+
+      <div class="form-alan">
+        <label for="sifre">Sifre:</label>
+        <input type="password" id="sifre">
+      </div>
+
+      <div class="giris-btn-alan">
+        <button class="giris-btn" id="girisBtn">Giriş Yap</button>
+      </div>
+
+    </div>
+
+  </div>
+
+<script>
+
+  document.getElementById("girisBtn").addEventListener("click", function () {
+
+    var kullaniciAdi = document.getElementById("kullaniciAdi").value;
+    var sifre = document.getElementById("sifre").value;
+
+    var popup = document.getElementById("popup");
+
+    if (kullaniciAdi === "admin" && sifre === "123") {
+
+      popup.className = "popup goster basari";
+      popup.textContent = "Giriş başarılı, yönlendiriliyorsunuz...";
+
+      setTimeout(function () {
+        window.location.href = "admin.html";
+      }, 3500);
+
+    } else {
+
+      popup.className = "popup goster hata";
+      popup.textContent = "Kullanıcı adı veya şifre hatalı!";
+
+    }
+  });
+</script>
+
+</body>
+</html>
